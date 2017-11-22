@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="com.example.poker.TestFlipView">
+
+    <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:id="@+id/easyFlipView1"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:flipOnTouch="true"
+        app:flipDuration="500"
+        app:flipEnabled="true"
+        android:layout_toLeftOf="@+id/easyFlipView2">
+        <ImageView
+            android:src="@drawable/c44"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
+        <ImageView
+            android:src="@drawable/coverme"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+    <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:id="@+id/easyFlipView2"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:flipOnTouch="true"
+        app:flipDuration="500"
+        app:flipEnabled="true">
+        <ImageView
+            android:src="@drawable/c48"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
+        <ImageView
+            android:src="@drawable/coverme"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+    <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:id="@+id/easyFlipView3"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:flipOnTouch="true"
+        app:flipDuration="500"
+        app:flipEnabled="true"
+        android:layout_toRightOf="@+id/easyFlipView2">
+        <ImageView
+            android:src="@drawable/c52"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
+        <ImageView
+            android:src="@drawable/coverme"
+            android:layout_width="100dp"
+            android:layout_height="200dp" />
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+</RelativeLayout>
