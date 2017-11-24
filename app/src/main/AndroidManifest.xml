@@ -18,8 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestFlipView"
-                android:screenOrientation="sensorLandscape"/>
         <activity android:name=".Game"
                 android:screenOrientation="sensorLandscape"></activity>
     </application>

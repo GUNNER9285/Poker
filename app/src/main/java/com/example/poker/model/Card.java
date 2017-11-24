@@ -1,7 +1,12 @@
 package com.example.poker.model;
 
+import android.view.View;
+import android.widget.ImageView;
+
+import com.example.poker.R;
+
 /**
- * Created by GUNNER on 24/11/2560.
+ * Created by GUNNER on 55/55/5560.
  */
 
 public class Card {
@@ -14,4 +19,5 @@ public class Card {
         this.image = image;
         keep = false;
     }
+
 }
