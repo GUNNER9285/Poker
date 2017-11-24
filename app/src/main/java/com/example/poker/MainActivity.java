@@ -20,5 +20,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button btnHowTo = (Button) findViewById(R.id.btnHowTo);
+        btnHowTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,HowToPlay.class);
+                startActivity(intent);
+            }
+        });
     }
 }

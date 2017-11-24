@@ -10,6 +10,7 @@ import com.example.poker.model.Card;
 import com.example.poker.model.Deck;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.List;
 
 public class Game extends AppCompatActivity {
@@ -49,7 +50,7 @@ public class Game extends AppCompatActivity {
     boolean keep5 = false;
 
     int coin = 0;
-    String winner = "High Card";
+    String message = "Royal Straight Flush";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class Game extends AppCompatActivity {
     public int randSuit(){
         return 1 + (int) Math.round(Math.random() * (4 - 1));
     }
+
     public void drawCard(){
         //Card 1
         suit1 = randSuit();
@@ -178,44 +180,37 @@ public class Game extends AppCompatActivity {
 
     public void keepCard1(View v){
         if (!keep1){
-            nameOfCard1 = "keep";
-            ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
             keep1 = true;
         }
         else{
-            nameOfCard1 = "card_"+num1+suit1;
             ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
             keep1 = false;
         }
     }
     public void keepCard2(View v){
         if (!keep2){
-            nameOfCard2 = "keep";
-            ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
             keep2 = true;
         }
         else{
-            nameOfCard2 = "card_"+num2+suit2;
             ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
             keep2 = false;
         }
     }
     public void keepCard3(View v){
         if (!keep3){
-            nameOfCard3 = "keep";
-            ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
             keep3 = true;
         }
         else{
-            nameOfCard3 = "card_"+num3+suit3;
             ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
             keep3 = false;
         }
     }
     public void keepCard4(View v){
         if (!keep4){
-            nameOfCard4 = "keep";
-            ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
             keep4 = true;
         }
         else{
@@ -226,12 +221,10 @@ public class Game extends AppCompatActivity {
     }
     public void keepCard5(View v){
         if (!keep5){
-            nameOfCard5 = "keep";
-            ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
             keep5 = true;
         }
         else{
-            nameOfCard5 = "card_"+num5+suit5;
             ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
             keep5 = false;
         }
@@ -244,11 +237,98 @@ public class Game extends AppCompatActivity {
         coinTextView.setText(cointText);
     }
 
-    public void play(View v){
+    public void keepCard(){
         if(!keep1){pickCard1();}
         if(!keep2){pickCard2();}
         if(!keep3){pickCard3();}
         if(!keep4){pickCard4();}
         if(!keep5){pickCard5();}
+    }
+    public void showCard(){
+        if(keep1){
+            ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
+            keep1 = false;
+        }
+        if(keep2){
+            ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
+            keep2 = false;
+        }
+        if(keep3){
+            ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
+            keep3 = false;
+        }
+        if(keep4){
+            ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
+            keep4 = false;
+        }
+        if(keep5){
+            ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
+            keep5 = false;
+        }
+    }
+    public String computeGame(){
+        int num[] = new int[5];
+        num[0] = num1;
+        num[1] = num2;
+        num[2] = num3;
+        num[3] = num4;
+        num[4] = num5;
+        Arrays.sort(num);
+        if(suit1 == suit2 && suit2 == suit3 && suit3 == suit4 && suit4 == suit5){
+            if(num[0] == 1 && num[1] == 10 && num[2] == 11 && num[3] == 12 && num[4] == 13){
+                return "Royal Straight Flush";
+            }
+            else if(num[4]-num[3] == 1 && num[3]-num[2] == 1 && num[2]-num[1] == 1 && num[1]-num[0] == 1){
+                return "Straight Flush";
+            }
+        }
+        else if(num[0] == num[3] && num[1] != num[4]){
+            return "Four of a kind";
+        }
+        int FullHouse = 0;
+        for(int i=1; i<5; ++i){
+            if(num[i]==num[i-1]){
+                ++FullHouse;
+            }
+        }
+        if(FullHouse == 3){
+            return "Full House";
+        }
+        if(suit1 == suit2 && suit2 == suit3 && suit3 == suit4 && suit4 == suit5){
+            return "Flush";
+        }
+        else if(num[4]-num[3] == 1 && num[3]-num[2] == 1 && num[2]-num[1] == 1 && num[1]-num[0] == 1){
+            return "Straight";
+        }
+        if(num[0] == num[3] || num[1] == num[4]){
+            return "Three of a kind";
+        }
+        int TwoPair = 0;
+        for(int i=1; i<5; ++i){
+            if(num[i]==num[i-1]){
+                ++TwoPair;
+            }
+        }
+        if(TwoPair == 2){
+            return "Two pair";
+        }
+        int OnePair = 0;
+        for(int i=1; i<5; ++i){
+            if(num[i]==num[i-1]){
+                ++OnePair;
+            }
+        }
+        if(OnePair == 1){
+            return "One pair";
+        }
+        return "High card";
+
+    }
+
+    public void play(View v){
+        keepCard();
+        showCard();
+        message = computeGame();
+        ((TextView) findViewById(R.id.msg)).setText(message);
     }
 }
