@@ -1,17 +1,21 @@
 package com.example.poker;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.poker.model.Card;
-import com.example.poker.model.Deck;
+import com.example.poker.model.Chips;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.List;
 
 public class Game extends AppCompatActivity {
 
@@ -50,16 +54,45 @@ public class Game extends AppCompatActivity {
     boolean keep5 = false;
 
     int coin = 0;
-    String message = "Royal Straight Flush";
+    String message = "";
+    boolean isDeal = true;
+    private final ChipsData chipsData = ChipsData.getInstance();   // global
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
-        drawCard();
-        computeCoin();
+        Button btnPlay = (Button) findViewById(R.id.btnPlay);
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isDeal){
+                    isDeal = true;
+                    if(keep1 || keep2 || keep3 || keep4 || keep5){
+                        keepCard();
+                        showCard();
+                    }
+                    message = computeGame();
+                    ((TextView) findViewById(R.id.msg)).setText(message);
+                    ((Button)findViewById(R.id.btnPlay)).setText("DEAL");
+                    calPoint();
+                    if(chipsData.point < 1000){
+                        Intent end = new Intent(Game.this, HighScore.class);
+                        startActivity(end);
+                    }
+                }
+                else{
+                    isDeal = false;
+                    drawCard();
+                    ((TextView) findViewById(R.id.msg)).setText("");
+                    ((Button)findViewById(R.id.btnPlay)).setText("OK");
+                }
+            }
+        });
     }
+
+    @Override
+    public void onBackPressed() {}
 
     public int randNum(){
         return 1 + (int) Math.round(Math.random() * (13 - 1));
@@ -179,54 +212,64 @@ public class Game extends AppCompatActivity {
     }
 
     public void keepCard1(View v){
-        if (!keep1){
-            ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
-            keep1 = true;
-        }
-        else{
-            ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
-            keep1 = false;
+        if(!isDeal){
+            if (!keep1){
+                ((ImageView) findViewById(R.id.card1)).setImageResource(R.drawable.keep);
+                keep1 = true;
+            }
+            else{
+                ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
+                keep1 = false;
+            }
         }
     }
     public void keepCard2(View v){
-        if (!keep2){
-            ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
-            keep2 = true;
-        }
-        else{
-            ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
-            keep2 = false;
+        if(!isDeal){
+            if (!keep2){
+                ((ImageView) findViewById(R.id.card2)).setImageResource(R.drawable.keep);
+                keep2 = true;
+            }
+            else{
+                ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
+                keep2 = false;
+            }
         }
     }
     public void keepCard3(View v){
-        if (!keep3){
-            ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
-            keep3 = true;
-        }
-        else{
-            ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
-            keep3 = false;
+        if(!isDeal){
+            if (!keep3){
+                ((ImageView) findViewById(R.id.card3)).setImageResource(R.drawable.keep);
+                keep3 = true;
+            }
+            else{
+                ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
+                keep3 = false;
+            }
         }
     }
     public void keepCard4(View v){
-        if (!keep4){
-            ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
-            keep4 = true;
-        }
-        else{
-            nameOfCard4 = "card_"+num4+suit4;
-            ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
-            keep4 = false;
+        if(!isDeal){
+            if (!keep4){
+                ((ImageView) findViewById(R.id.card4)).setImageResource(R.drawable.keep);
+                keep4 = true;
+            }
+            else{
+                nameOfCard4 = "card_"+num4+suit4;
+                ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
+                keep4 = false;
+            }
         }
     }
     public void keepCard5(View v){
-        if (!keep5){
-            ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier("keep","drawable",getPackageName()));
-            keep5 = true;
-        }
-        else{
-            ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
-            keep5 = false;
+        if(!isDeal){
+            if (!keep5){
+                ((ImageView) findViewById(R.id.card5)).setImageResource(R.drawable.keep);
+                keep5 = true;
+            }
+            else{
+                ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
+                keep5 = false;
+            }
         }
     }
 
@@ -267,12 +310,7 @@ public class Game extends AppCompatActivity {
         }
     }
     public String computeGame(){
-        int num[] = new int[5];
-        num[0] = num1;
-        num[1] = num2;
-        num[2] = num3;
-        num[3] = num4;
-        num[4] = num5;
+        int num[] = {num1, num2, num3, num4, num5};
         Arrays.sort(num);
         if(suit1 == suit2 && suit2 == suit3 && suit3 == suit4 && suit4 == suit5){
             if(num[0] == 1 && num[1] == 10 && num[2] == 11 && num[3] == 12 && num[4] == 13){
@@ -300,7 +338,7 @@ public class Game extends AppCompatActivity {
         else if(num[4]-num[3] == 1 && num[3]-num[2] == 1 && num[2]-num[1] == 1 && num[1]-num[0] == 1){
             return "Straight";
         }
-        if(num[0] == num[3] || num[1] == num[4]){
+        if(num[0] == num[2] || num[1] == num[3] || num[2] == num[4]){
             return "Three of a kind";
         }
         int TwoPair = 0;
@@ -325,10 +363,36 @@ public class Game extends AppCompatActivity {
 
     }
 
-    public void play(View v){
-        keepCard();
-        showCard();
-        message = computeGame();
-        ((TextView) findViewById(R.id.msg)).setText(message);
+    public void calPoint(){
+        int point = chipsData.point;
+        int bet = chipsData.bet;
+        if(message.equals("Royal Straight Flush")){
+             point += (bet * 250);
+        }
+        else if (message.equals("Straight Flush")){
+            point += (bet * 25);
+        }
+        else if (message.equals("Four of a kind")){
+            point += (bet * 20);
+        }
+        else if (message.equals("Full House")){
+            point += (bet * 10);
+        }
+        else if (message.equals("Flush")){
+            point += (bet * 4);
+        }
+        else if (message.equals("Straight")){
+            point += (bet * 3);
+        }
+        else if (message.equals("Three of a kind")){
+            point += (bet * 1);
+        }
+        else if(message.equals("Two pair")){
+            point += (bet * 1);
+        }
+        else{
+            point -= bet;
+        }
+        chipsData.point = point;
     }
 }

@@ -68,15 +68,14 @@
         android:layout_below="@+id/card1"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="40dp"
-        android:text="Coin : 0"
-        android:textSize="25dp"/>
+        android:text="Chip สะสม : 0"
+        android:textSize="2dp"/>
     <Button
         android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/card1"
-        android:text="PLAY"
-        android:onClick="play"/>
+        android:text="DEAL"/>
 
 </RelativeLayout>
