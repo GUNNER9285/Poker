@@ -8,7 +8,7 @@ import com.example.poker.model.Chips;
 
 public class ChipsData {
     private static ChipsData sInstance;
-    public int point = 5000;
+    public int point = 4000;
     public int bet = 1000;
     public static ChipsData getInstance(){
         if(sInstance == null){

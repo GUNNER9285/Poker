@@ -21,8 +21,9 @@
         android:id="@+id/card5"
         android:layout_width="90dp"
         android:layout_height="140dp"
-        android:layout_margin="8dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="96dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/cover"
         android:layout_toLeftOf="@id/card3"
         android:onClick="keepCard5"/>
@@ -30,8 +31,9 @@
         android:id="@+id/card3"
         android:layout_width="90dp"
         android:layout_height="140dp"
-        android:layout_margin="8dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="96dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/cover"
         android:layout_toLeftOf="@id/card1"
         android:onClick="keepCard3"/>
@@ -39,16 +41,18 @@
         android:id="@+id/card1"
         android:layout_width="90dp"
         android:layout_height="140dp"
-        android:layout_margin="8dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="96dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/cover"
         android:onClick="keepCard1"/>
     <ImageView
         android:id="@+id/card2"
         android:layout_width="90dp"
         android:layout_height="140dp"
-        android:layout_margin="8dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="96dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/cover"
         android:layout_toRightOf="@+id/card1"
         android:onClick="keepCard2"/>
@@ -56,26 +60,104 @@
         android:id="@+id/card4"
         android:layout_width="90dp"
         android:layout_height="140dp"
-        android:layout_margin="8dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="96dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/cover"
         android:layout_toRightOf="@+id/card2"
         android:onClick="keepCard4"/>
-    <TextView
-        android:id="@+id/coin"
+
+    <Button
+        android:id="@+id/btn1000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/card1"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="40dp"
-        android:text="Chip สะสม : 0"
-        android:textSize="2dp"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/card3"
+        android:layout_toLeftOf="@id/btn2000"
+        android:layout_marginRight="16dp"
+        android:text="1000"
+        android:onClick="bet1000"/>
+    <Button
+        android:id="@+id/btn2000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/card3"
+        android:layout_toLeftOf="@id/btn3000"
+        android:layout_marginRight="16dp"
+        android:text="2000"
+        android:onClick="bet2000"/>
+    <Button
+        android:id="@+id/btn3000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/card3"
+        android:layout_marginRight="16dp"
+        android:text="3000"
+        android:onClick="bet3000"/>
+    <Button
+        android:id="@+id/btn5000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/card3"
+        android:layout_toRightOf="@id/btn3000"
+        android:layout_marginRight="16dp"
+        android:text="5000"
+        android:onClick="bet5000"/>
+    <Button
+        android:id="@+id/btn10000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/card3"
+        android:layout_toRightOf="@id/btn5000"
+        android:layout_marginRight="16dp"
+        android:text="10000"
+        android:onClick="bet10000"/>
+
     <Button
         android:id="@+id/btnPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/card1"
-        android:text="DEAL"/>
+        android:layout_below="@id/btn3000"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:text="DEAL"
+        android:onClick="playGame"/>
+    <Button
+        android:id="@+id/btnEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btn3000"
+        android:layout_toRightOf="@id/btnPlay"
+        android:layout_marginTop="8dp"
+        android:text="END GAME"
+        android:onClick="endGame"/>
+    <TextView
+        android:id="@+id/txtPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btn3000"
+        android:layout_toLeftOf="@id/btnPlay"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="80dp"
+        android:text="Point : 4,000"
+        android:textSize="20dp"/>
+    <TextView
+        android:id="@+id/txtBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/txtPoint"
+        android:layout_toLeftOf="@id/btnPlay"
+        android:layout_marginRight="80dp"
+        android:text="Bet : 1,000"
+        android:textSize="20dp"/>
+
 
 </RelativeLayout>

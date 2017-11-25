@@ -25,22 +25,12 @@ public class Game extends AppCompatActivity {
     String nameOfCard4 = "";
     String nameOfCard5 = "";
 
-    int Cardsuit1 = 0;
-    int Cardsuit2 = 0;
-    int Cardsuit3 = 0;
-    int Cardsuit4 = 0;
-    int Cardsuit5 = 0;
     int suit1 = 0;
     int suit2 = 0;
     int suit3 = 0;
     int suit4 = 0;
     int suit5 = 0;
 
-    int Cardnum1 = 0;
-    int Cardnum2 = 0;
-    int Cardnum3 = 0;
-    int Cardnum4 = 0;
-    int Cardnum5 = 0;
     int num1 = 0;
     int num2 = 0;
     int num3 = 0;
@@ -53,7 +43,6 @@ public class Game extends AppCompatActivity {
     boolean keep4 = false;
     boolean keep5 = false;
 
-    int coin = 0;
     String message = "";
     boolean isDeal = true;
     private final ChipsData chipsData = ChipsData.getInstance();   // global
@@ -62,37 +51,41 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        Button btnPlay = (Button) findViewById(R.id.btnPlay);
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!isDeal){
-                    isDeal = true;
-                    if(keep1 || keep2 || keep3 || keep4 || keep5){
-                        keepCard();
-                        showCard();
-                    }
-                    message = computeGame();
-                    ((TextView) findViewById(R.id.msg)).setText(message);
-                    ((Button)findViewById(R.id.btnPlay)).setText("DEAL");
-                    calPoint();
-                    if(chipsData.point < 1000){
-                        Intent end = new Intent(Game.this, HighScore.class);
-                        startActivity(end);
-                    }
-                }
-                else{
-                    isDeal = false;
-                    drawCard();
-                    ((TextView) findViewById(R.id.msg)).setText("");
-                    ((Button)findViewById(R.id.btnPlay)).setText("OK");
-                }
-            }
-        });
+        newgame();
     }
 
     @Override
     public void onBackPressed() {}
+
+    public void playGame(View v){
+        if(!isDeal){
+            isDeal = true;
+            if(keep1 || keep2 || keep3 || keep4 || keep5){
+                keepCard();
+                showCard();
+            }
+            message = computeGame();
+            calPoint();
+            checkPoint();
+            ((TextView) findViewById(R.id.msg)).setText(message);
+            ((Button)findViewById(R.id.btnPlay)).setText("DEAL");
+        }
+        else{
+            isDeal = false;
+            drawCard();
+            ((TextView) findViewById(R.id.msg)).setText("");
+            ((Button)findViewById(R.id.btnPlay)).setText("OK");
+        }
+    }
+    public void endGame(View v){
+        Intent intent = new Intent(Game.this, HighScore.class);
+        startActivity(intent);
+    }
+    public void newgame(){
+        chipsData.point = 4000;
+        chipsData.bet = 1000;
+        isDeal = true;
+    }
 
     public int randNum(){
         return 1 + (int) Math.round(Math.random() * (13 - 1));
@@ -105,8 +98,6 @@ public class Game extends AppCompatActivity {
         //Card 1
         suit1 = randSuit();
         num1 = randNum();
-        Cardsuit1 = suit1;
-        Cardnum1 = num1;
         nameOfCard1 = "card_"+num1+suit1;
         ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
 
@@ -116,8 +107,6 @@ public class Game extends AppCompatActivity {
         while(suit2 == suit1 && num2 == num1){
             num2 = randNum();
         }
-        Cardsuit2 = suit2;
-        Cardnum2 = num2;
         nameOfCard2 = "card_"+num2+suit2;
         ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
 
@@ -127,8 +116,6 @@ public class Game extends AppCompatActivity {
         while((suit3 == suit1 && num3 == num1)||(suit3 == suit2 && num3 == num2)){
             num3 = randNum();
         }
-        Cardsuit3 = suit3;
-        Cardnum3 = num3;
         nameOfCard3 = "card_"+num3+suit3;
         ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
 
@@ -138,8 +125,6 @@ public class Game extends AppCompatActivity {
         while((suit4 == suit1 && num4 == num1)||(suit4 == suit2 && num4 == num2) || (suit4 == suit3 && num4 == num3)){
             num4 = randNum();
         }
-        Cardsuit4 = suit4;
-        Cardnum4 = num4;
         nameOfCard4 = "card_"+num4+suit4;
         ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
 
@@ -149,8 +134,6 @@ public class Game extends AppCompatActivity {
         while((suit5 == suit1 && num5 == num1)||(suit5 == suit2 && num5 == num2) || (suit5 == suit3 && num5 == num3) || (suit5 == suit4 && num5 == num4)){
             num5 = randNum();
         }
-        Cardsuit5 = suit5;
-        Cardnum5 = num5;
         nameOfCard5 = "card_"+num5+suit5;
         ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
     }
@@ -161,8 +144,6 @@ public class Game extends AppCompatActivity {
         while((suit1 == suit2 && num1 == num2)||(suit1 == suit3 && num1 == num3) || (suit1 == suit4 && num1 == num4) || (suit1 == suit5 && num1 == num5)){
             num1 = randNum();
         }
-        Cardsuit1 = suit1;
-        Cardnum1 = num1;
         nameOfCard1 = "card_"+num1+suit1;
         ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
     }
@@ -172,8 +153,6 @@ public class Game extends AppCompatActivity {
         while((suit2 == suit1 && num1 == num1)||(suit2 == suit3 && num2 == num3) || (suit2 == suit4 && num2 == num4) || (suit2 == suit5 && num2 == num5)){
             num2 = randNum();
         }
-        Cardsuit2 = suit2;
-        Cardnum2 = num2;
         nameOfCard2 = "card_"+num2+suit2;
         ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
     }
@@ -183,8 +162,6 @@ public class Game extends AppCompatActivity {
         while((suit3 == suit1 && num3 == num1)||(suit3 == suit2 && num3 == num2) || (suit3 == suit4 && num3 == num4) || (suit3 == suit5 && num3 == num5)){
             num3 = randNum();
         }
-        Cardsuit3 = suit3;
-        Cardnum3 = num3;
         nameOfCard3 = "card_"+num3+suit3;
         ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
     }
@@ -194,8 +171,6 @@ public class Game extends AppCompatActivity {
         while((suit4 == suit1 && num4 == num1)||(suit4 == suit2 && num4 == num2) || (suit4 == suit3 && num4 == num3) || (suit4 == suit5 && num4 == num5)){
             num4 = randNum();
         }
-        Cardsuit4 = suit4;
-        Cardnum4 = num4;
         nameOfCard4 = "card_"+num4+suit4;
         ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
     }
@@ -205,8 +180,6 @@ public class Game extends AppCompatActivity {
         while((suit5 == suit1 && num5 == num1)||(suit5 == suit2 && num5 == num2) || (suit5 == suit3 && num5 == num3) || (suit5 == suit4 && num5 == num4)){
             num5 = randNum();
         }
-        Cardsuit5 = suit5;
-        Cardnum5 = num5;
         nameOfCard5 = "card_"+num5+suit5;
         ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
     }
@@ -271,13 +244,6 @@ public class Game extends AppCompatActivity {
                 keep5 = false;
             }
         }
-    }
-
-    public void computeCoin(){
-        DecimalFormat form = new DecimalFormat("#,###");
-        TextView coinTextView = (TextView)findViewById(R.id.coin);
-        String cointText = "Coin : "+form.format(coin);
-        coinTextView.setText(cointText);
     }
 
     public void keepCard(){
@@ -363,36 +329,96 @@ public class Game extends AppCompatActivity {
 
     }
 
+    public void computeChips(){
+        DecimalFormat form = new DecimalFormat("#,###");
+        TextView pointTextView = (TextView)findViewById(R.id.txtPoint);
+        String pointText = "Point : "+form.format(chipsData.point);
+        pointTextView.setText(pointText);
+
+        TextView betTextView = (TextView)findViewById(R.id.txtBet);
+        String betText = "Bet : "+form.format(chipsData.bet);
+        betTextView.setText(betText);
+    }
+    public void bet1000(View v){
+        if(!isDeal){
+            chipsData.bet += 1000;
+            chipsData.point -= 1000;
+        }
+        computeChips();
+    }
+    public void bet2000(View v){
+        if(!isDeal){
+            chipsData.bet += 2000;
+            chipsData.point -= 2000;
+        }
+        computeChips();
+    }
+    public void bet3000(View v){
+        if(!isDeal){
+            chipsData.bet += 3000;
+            chipsData.point -= 3000;
+        }
+        computeChips();
+    }
+    public void bet5000(View v){
+        if(!isDeal){
+            chipsData.bet += 5000;
+            chipsData.point -= 5000;
+        }
+        computeChips();
+    }
+    public void bet10000(View v){
+        if(!isDeal){
+            chipsData.bet += 10000;
+            chipsData.point -= 10000;
+        }
+        computeChips();
+    }
     public void calPoint(){
         int point = chipsData.point;
         int bet = chipsData.bet;
-        if(message.equals("Royal Straight Flush")){
-             point += (bet * 250);
-        }
-        else if (message.equals("Straight Flush")){
-            point += (bet * 25);
-        }
-        else if (message.equals("Four of a kind")){
-            point += (bet * 20);
-        }
-        else if (message.equals("Full House")){
-            point += (bet * 10);
-        }
-        else if (message.equals("Flush")){
-            point += (bet * 4);
-        }
-        else if (message.equals("Straight")){
-            point += (bet * 3);
-        }
-        else if (message.equals("Three of a kind")){
-            point += (bet * 1);
-        }
-        else if(message.equals("Two pair")){
-            point += (bet * 1);
+        if(message.equals("One pair") || message.equals("High card")){
+            point -= bet;
+            chipsData.point = point;
         }
         else{
-            point -= bet;
+            if(message.equals("Royal Straight Flush")){
+                point += (bet * 250);
+            }
+            else if (message.equals("Straight Flush")){
+                point += (bet * 25);
+            }
+            else if (message.equals("Four of a kind")){
+                point += (bet * 20);
+            }
+            else if (message.equals("Full House")){
+                point += (bet * 10);
+            }
+            else if (message.equals("Flush")){
+                point += (bet * 4);
+            }
+            else if (message.equals("Straight")){
+                point += (bet * 3);
+            }
+            else if (message.equals("Three of a kind")){
+                point += bet;
+            }
+            else if(message.equals("Two pair")){
+                point += bet;
+            }
+            chipsData.point = point;
         }
-        chipsData.point = point;
+        if(point < 0){
+            point = 0;
+        }
+        chipsData.bet = 1000;
+        computeChips();
+    }
+    public void checkPoint(){
+        if(chipsData.point < 0){
+            chipsData.point = 0;
+            Intent end = new Intent(Game.this, HighScore.class);
+            startActivity(end);
+        }
     }
 }
