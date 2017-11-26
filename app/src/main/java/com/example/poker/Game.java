@@ -18,7 +18,6 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class Game extends AppCompatActivity {
-
     String nameOfCard1 = "";
     String nameOfCard2 = "";
     String nameOfCard3 = "";
@@ -378,10 +377,11 @@ public class Game extends AppCompatActivity {
         int point = chipsData.point;
         int bet = chipsData.bet;
         if(message.equals("One pair") || message.equals("High card")){
-            point -= bet;
+            point -= 1000;
             chipsData.point = point;
         }
         else{
+            point += bet;
             if(message.equals("Royal Straight Flush")){
                 point += (bet * 250);
             }
@@ -406,7 +406,7 @@ public class Game extends AppCompatActivity {
             else if(message.equals("Two pair")){
                 point += bet;
             }
-            chipsData.point = point;
+            chipsData.point = point-1000;
         }
         if(point < 0){
             point = 0;
