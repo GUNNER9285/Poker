@@ -18,17 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Game"
             android:screenOrientation="sensorLandscape" />
-
         <activity
             android:name=".HowToPlay"
             android:screenOrientation="sensorLandscape" />
-
-        <activity android:name=".HighScore"
-            android:screenOrientation="sensorLandscape" />/>
+        <activity
+            android:name=".HighScore"
+            android:screenOrientation="sensorLandscape" />
+        />
+        <activity android:name=".HighLow"></activity>
     </application>
 
 </manifest>

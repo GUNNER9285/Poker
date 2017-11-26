@@ -44,12 +44,14 @@ public class Game extends AppCompatActivity {
 
     String message = "";
     boolean isDeal = true;
+    int stage = 1;
     private final ChipsData chipsData = ChipsData.getInstance();   // global
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        betgame();
         newgame();
     }
 
@@ -57,33 +59,67 @@ public class Game extends AppCompatActivity {
     public void onBackPressed() {}
 
     public void playGame(View v){
-        if(!isDeal){
-            isDeal = true;
-            if(keep1 || keep2 || keep3 || keep4 || keep5){
+        if (stage == 1){
+            ((TextView) findViewById(R.id.msg)).setText("");
+            betgame();
+        }
+        else if(!isDeal && stage == 3){
+            if(!keep1 || !keep2 || !keep3 || !keep4 || !keep5){
                 keepCard();
                 showCard();
             }
             message = computeGame();
             calPoint();
-            checkPoint();
             ((TextView) findViewById(R.id.msg)).setText(message);
             ((Button)findViewById(R.id.btnPlay)).setText("DEAL");
+            ((Button)findViewById(R.id.btn1000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn2000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn3000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn5000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn10000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btnEnd)).setVisibility(Button.VISIBLE);
+            stage = 1;
         }
-        else{
-            isDeal = false;
+        else if(stage == 2){
             drawCard();
             ((TextView) findViewById(R.id.msg)).setText("");
             ((Button)findViewById(R.id.btnPlay)).setText("OK");
+            ((Button)findViewById(R.id.btn1000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn2000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn3000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn5000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btn10000)).setVisibility(Button.INVISIBLE);
+            ((Button)findViewById(R.id.btnEnd)).setVisibility(Button.INVISIBLE);
+            stage = 3;
         }
     }
-    public void endGame(View v){
-        Intent intent = new Intent(Game.this, HighScore.class);
-        startActivity(intent);
+
+    public void betgame(){
+        if(stage == 1){
+            ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
+            ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
+
+            ((Button)findViewById(R.id.btn1000)).setVisibility(Button.VISIBLE);
+            ((Button)findViewById(R.id.btn2000)).setVisibility(Button.VISIBLE);
+            ((Button)findViewById(R.id.btn3000)).setVisibility(Button.VISIBLE);
+            ((Button)findViewById(R.id.btn5000)).setVisibility(Button.VISIBLE);
+            ((Button)findViewById(R.id.btn10000)).setVisibility(Button.VISIBLE);
+            ((Button)findViewById(R.id.btnPlay)).setText("BET");
+            ((Button)findViewById(R.id.btnEnd)).setVisibility(Button.INVISIBLE);
+            stage = 2;
+        }
     }
     public void newgame(){
         chipsData.point = 4000;
         chipsData.bet = 1000;
         isDeal = true;
+    }
+    public void endGame(View v){
+        Intent end = new Intent(Game.this, HighScore.class);
+        startActivity(end);
     }
 
     public int randNum(){
@@ -104,6 +140,7 @@ public class Game extends AppCompatActivity {
         suit2 = randSuit();
         num2 = randNum();
         while(suit2 == suit1 && num2 == num1){
+            suit2 = randSuit();
             num2 = randNum();
         }
         nameOfCard2 = "card_"+num2+suit2;
@@ -113,6 +150,7 @@ public class Game extends AppCompatActivity {
         suit3 = randSuit();
         num3 = randNum();
         while((suit3 == suit1 && num3 == num1)||(suit3 == suit2 && num3 == num2)){
+            suit3 = randSuit();
             num3 = randNum();
         }
         nameOfCard3 = "card_"+num3+suit3;
@@ -122,6 +160,7 @@ public class Game extends AppCompatActivity {
         suit4 = randSuit();
         num4 = randNum();
         while((suit4 == suit1 && num4 == num1)||(suit4 == suit2 && num4 == num2) || (suit4 == suit3 && num4 == num3)){
+            suit4 = randSuit();
             num4 = randNum();
         }
         nameOfCard4 = "card_"+num4+suit4;
@@ -131,6 +170,7 @@ public class Game extends AppCompatActivity {
         suit5 = randSuit();
         num5 = randNum();
         while((suit5 == suit1 && num5 == num1)||(suit5 == suit2 && num5 == num2) || (suit5 == suit3 && num5 == num3) || (suit5 == suit4 && num5 == num4)){
+            suit5 = randSuit();
             num5 = randNum();
         }
         nameOfCard5 = "card_"+num5+suit5;
@@ -140,7 +180,12 @@ public class Game extends AppCompatActivity {
     public void pickCard1(){
         suit1 = randSuit();
         num1 = randNum();
-        while((suit1 == suit2 && num1 == num2)||(suit1 == suit3 && num1 == num3) || (suit1 == suit4 && num1 == num4) || (suit1 == suit5 && num1 == num5)){
+        while((suit1 == suit2 && num1 == num2) ||
+                (suit1 == suit3 && num1 == num3) ||
+                (suit1 == suit4 && num1 == num4) ||
+                (suit1 == suit5 && num1 == num5))
+        {
+            suit1 = randSuit();
             num1 = randNum();
         }
         nameOfCard1 = "card_"+num1+suit1;
@@ -149,7 +194,12 @@ public class Game extends AppCompatActivity {
     public void pickCard2(){
         suit2 = randSuit();
         num2 = randNum();
-        while((suit2 == suit1 && num1 == num1)||(suit2 == suit3 && num2 == num3) || (suit2 == suit4 && num2 == num4) || (suit2 == suit5 && num2 == num5)){
+        while((suit2 == suit1 && num2 == num1) ||
+                (suit2 == suit3 && num2 == num3) ||
+                (suit2 == suit4 && num2 == num4) ||
+                (suit2 == suit5 && num2 == num5))
+        {
+            suit2 = randSuit();
             num2 = randNum();
         }
         nameOfCard2 = "card_"+num2+suit2;
@@ -158,7 +208,12 @@ public class Game extends AppCompatActivity {
     public void pickCard3(){
         suit3 = randSuit();
         num3 = randNum();
-        while((suit3 == suit1 && num3 == num1)||(suit3 == suit2 && num3 == num2) || (suit3 == suit4 && num3 == num4) || (suit3 == suit5 && num3 == num5)){
+        while((suit3 == suit1 && num3 == num1) ||
+                (suit3 == suit2 && num3 == num2) ||
+                (suit3 == suit4 && num3 == num4) ||
+                (suit3 == suit5 && num3 == num5))
+        {
+            suit3 = randSuit();
             num3 = randNum();
         }
         nameOfCard3 = "card_"+num3+suit3;
@@ -167,7 +222,12 @@ public class Game extends AppCompatActivity {
     public void pickCard4(){
         suit4 = randSuit();
         num4 = randNum();
-        while((suit4 == suit1 && num4 == num1)||(suit4 == suit2 && num4 == num2) || (suit4 == suit3 && num4 == num3) || (suit4 == suit5 && num4 == num5)){
+        while((suit4 == suit1 && num4 == num1) ||
+                (suit4 == suit2 && num4 == num2) ||
+                (suit4 == suit3 && num4 == num3) ||
+                (suit4 == suit5 && num4 == num5))
+        {
+            suit4 = randSuit();
             num4 = randNum();
         }
         nameOfCard4 = "card_"+num4+suit4;
@@ -176,7 +236,12 @@ public class Game extends AppCompatActivity {
     public void pickCard5(){
         suit5 = randSuit();
         num5 = randNum();
-        while((suit5 == suit1 && num5 == num1)||(suit5 == suit2 && num5 == num2) || (suit5 == suit3 && num5 == num3) || (suit5 == suit4 && num5 == num4)){
+        while((suit5 == suit1 && num5 == num1) ||
+                (suit5 == suit2 && num5 == num2) ||
+                (suit5 == suit3 && num5 == num3) ||
+                (suit5 == suit4 && num5 == num4))
+        {
+            suit5 = randSuit();
             num5 = randNum();
         }
         nameOfCard5 = "card_"+num5+suit5;
@@ -186,7 +251,7 @@ public class Game extends AppCompatActivity {
     public void keepCard1(View v){
         if(!isDeal){
             if (!keep1){
-                ((ImageView) findViewById(R.id.card1)).setImageResource(R.drawable.keep);
+                ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1+"k","drawable",getPackageName()));
                 keep1 = true;
             }
             else{
@@ -198,7 +263,7 @@ public class Game extends AppCompatActivity {
     public void keepCard2(View v){
         if(!isDeal){
             if (!keep2){
-                ((ImageView) findViewById(R.id.card2)).setImageResource(R.drawable.keep);
+                ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2+"k","drawable",getPackageName()));
                 keep2 = true;
             }
             else{
@@ -210,7 +275,7 @@ public class Game extends AppCompatActivity {
     public void keepCard3(View v){
         if(!isDeal){
             if (!keep3){
-                ((ImageView) findViewById(R.id.card3)).setImageResource(R.drawable.keep);
+                ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3+"k","drawable",getPackageName()));
                 keep3 = true;
             }
             else{
@@ -222,7 +287,7 @@ public class Game extends AppCompatActivity {
     public void keepCard4(View v){
         if(!isDeal){
             if (!keep4){
-                ((ImageView) findViewById(R.id.card4)).setImageResource(R.drawable.keep);
+                ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4+"k","drawable",getPackageName()));
                 keep4 = true;
             }
             else{
@@ -235,7 +300,7 @@ public class Game extends AppCompatActivity {
     public void keepCard5(View v){
         if(!isDeal){
             if (!keep5){
-                ((ImageView) findViewById(R.id.card5)).setImageResource(R.drawable.keep);
+                ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5+"k","drawable",getPackageName()));
                 keep5 = true;
             }
             else{
@@ -329,9 +394,16 @@ public class Game extends AppCompatActivity {
     }
 
     public void computeChips(){
+        if(chipsData.point < 0){
+            chipsData.point = -1;
+        }
+        checkPoint();
+        if(chipsData.point < 0){
+            chipsData.point = 0;
+        }
         DecimalFormat form = new DecimalFormat("#,###");
         TextView pointTextView = (TextView)findViewById(R.id.txtPoint);
-        String pointText = "Point : "+form.format(chipsData.point);
+        String pointText = "Chip : "+form.format(chipsData.point);
         pointTextView.setText(pointText);
 
         TextView betTextView = (TextView)findViewById(R.id.txtBet);
@@ -339,35 +411,35 @@ public class Game extends AppCompatActivity {
         betTextView.setText(betText);
     }
     public void bet1000(View v){
-        if(!isDeal){
+        if(isDeal){
             chipsData.bet += 1000;
             chipsData.point -= 1000;
         }
         computeChips();
     }
     public void bet2000(View v){
-        if(!isDeal){
+        if(isDeal){
             chipsData.bet += 2000;
             chipsData.point -= 2000;
         }
         computeChips();
     }
     public void bet3000(View v){
-        if(!isDeal){
+        if(isDeal){
             chipsData.bet += 3000;
             chipsData.point -= 3000;
         }
         computeChips();
     }
     public void bet5000(View v){
-        if(!isDeal){
+        if(isDeal){
             chipsData.bet += 5000;
             chipsData.point -= 5000;
         }
         computeChips();
     }
     public void bet10000(View v){
-        if(!isDeal){
+        if(isDeal){
             chipsData.bet += 10000;
             chipsData.point -= 10000;
         }
@@ -386,22 +458,22 @@ public class Game extends AppCompatActivity {
                 point += (bet * 250);
             }
             else if (message.equals("Straight Flush")){
-                point += (bet * 25);
+                point += (bet * 60);
             }
             else if (message.equals("Four of a kind")){
-                point += (bet * 20);
+                point += (bet * 25);
             }
             else if (message.equals("Full House")){
-                point += (bet * 10);
+                point += (bet * 20);
             }
             else if (message.equals("Flush")){
-                point += (bet * 4);
+                point += (bet * 10);
             }
             else if (message.equals("Straight")){
-                point += (bet * 3);
+                point += (bet * 5);
             }
             else if (message.equals("Three of a kind")){
-                point += bet;
+                point += (bet * 3);
             }
             else if(message.equals("Two pair")){
                 point += bet;
@@ -416,9 +488,9 @@ public class Game extends AppCompatActivity {
     }
     public void checkPoint(){
         if(chipsData.point < 0){
-            chipsData.point = 0;
             Intent end = new Intent(Game.this, HighScore.class);
             startActivity(end);
         }
     }
+
 }
