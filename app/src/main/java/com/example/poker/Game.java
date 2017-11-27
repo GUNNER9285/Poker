@@ -2,13 +2,9 @@ package com.example.poker;
 
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -17,11 +13,8 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.poker.model.Chips;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -69,6 +62,11 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         background = (RelativeLayout) findViewById(R.id.background);
+        card1 = ((ImageView) findViewById(R.id.card1));
+        card2 = ((ImageView) findViewById(R.id.card2));
+        card3 = ((ImageView) findViewById(R.id.card3));
+        card4 = ((ImageView) findViewById(R.id.card4));
+        card5 = ((ImageView) findViewById(R.id.card5));
         betgame();
         newgame();
     }
@@ -101,6 +99,7 @@ public class Game extends AppCompatActivity {
             ((Button)findViewById(R.id.btn10000)).setVisibility(Button.INVISIBLE);
             ((Button)findViewById(R.id.btnEnd)).setVisibility(Button.VISIBLE);
             stage = 1;
+
         }
         else if(stage == 2){
             isDeal = false;
@@ -119,6 +118,7 @@ public class Game extends AppCompatActivity {
 
     public void betgame(){
         if(stage == 1){
+            ((TextView) findViewById(R.id.msg)).setText("Place your bets.");
             ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
             ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
             ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier("cover","drawable",getPackageName()));
@@ -154,13 +154,11 @@ public class Game extends AppCompatActivity {
 
     public void drawCard(){
         //Card 1
-        card1 = ((ImageView) findViewById(R.id.card1));
         suit1 = randSuit();
         num1 = randNum();
         nameOfCard1 = "card_"+num1+suit1;
 
         //Card 2
-        card2 = ((ImageView) findViewById(R.id.card2));
         suit2 = randSuit();
         num2 = randNum();
         while(suit2 == suit1 && num2 == num1){
@@ -170,7 +168,6 @@ public class Game extends AppCompatActivity {
         nameOfCard2 = "card_"+num2+suit2;
 
         //Card 3
-        card3 = ((ImageView) findViewById(R.id.card3));
         suit3 = randSuit();
         num3 = randNum();
         while((suit3 == suit1 && num3 == num1)||(suit3 == suit2 && num3 == num2)){
@@ -180,7 +177,6 @@ public class Game extends AppCompatActivity {
         nameOfCard3 = "card_"+num3+suit3;
 
         //Card 4
-        card4 = ((ImageView) findViewById(R.id.card4));
         suit4 = randSuit();
         num4 = randNum();
         while((suit4 == suit1 && num4 == num1)||(suit4 == suit2 && num4 == num2) || (suit4 == suit3 && num4 == num3)){
@@ -190,7 +186,6 @@ public class Game extends AppCompatActivity {
         nameOfCard4 = "card_"+num4+suit4;
 
         //Card 5
-        card5 = ((ImageView) findViewById(R.id.card5));
         suit5 = randSuit();
         num5 = randNum();
         while((suit5 == suit1 && num5 == num1)||(suit5 == suit2 && num5 == num2) || (suit5 == suit3 && num5 == num3) || (suit5 == suit4 && num5 == num4)){

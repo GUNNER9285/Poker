@@ -7,15 +7,17 @@
     android:layout_height="match_parent"
     tools:context="com.example.poker.Game"
     android:padding="8dp"
-    android:id="@+id/background">
+    android:id="@+id/background"
+    android:background="@drawable/poker3">
 
     <TextView
         android:id="@+id/msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:layout_centerHorizontal="true"
-        android:text=""
+        android:layout_margin="8dp"
+        android:fontFamily="@font/bubblegum_sans"
+        android:textColor="#FFFFFF"
         android:textSize="60dp" />
 
     <ImageView
@@ -138,27 +140,33 @@
         android:layout_marginTop="8dp"
         android:text="END GAME"
         android:onClick="endGame"/>
+
     <TextView
         android:id="@+id/txtPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/btn3000"
-        android:layout_toLeftOf="@id/btnPlay"
-        android:layout_marginTop="4dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginRight="80dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@id/btnPlay"
+        android:fontFamily="@font/arapey_italic"
         android:text="Chip : 4,000"
-        android:textSize="20dp"/>
+        android:textColor="#FFFFFF"
+        android:textSize="25dp" />
+
     <TextView
         android:id="@+id/txtBet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/txtPoint"
-        android:layout_toLeftOf="@id/btnPlay"
+        android:layout_centerHorizontal="true"
         android:layout_marginRight="80dp"
+        android:layout_toLeftOf="@id/btnPlay"
+        android:fontFamily="@font/arapey_italic"
         android:text="Bet : 1,000"
-        android:textSize="20dp"/>
+        android:textColor="#FFFFFF"
+        android:textSize="25dp" />
 
 
 </RelativeLayout>

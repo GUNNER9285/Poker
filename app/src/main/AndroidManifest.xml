@@ -27,8 +27,12 @@
         <activity
             android:name=".HighScore"
             android:screenOrientation="sensorLandscape" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" /><![CDATA[
         />
-        <activity android:name=".HighLow"></activity>
+        ]]>
     </application>
 
 </manifest>

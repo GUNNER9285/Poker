@@ -1,7 +1,5 @@
 package com.example.poker;
 
-import com.example.poker.model.Chips;
-
 /**
  * Created by GUNNER on 25/11/2560.
  */

@@ -12,21 +12,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btnRandom = (Button) findViewById(R.id.btnRandom);
-        btnRandom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,Game.class);
-                startActivity(intent);
-            }
-        });
-        Button btnHowTo = (Button) findViewById(R.id.btnHowTo);
-        btnHowTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,HowToPlay.class);
-                startActivity(intent);
-            }
-        });
+
+    }
+    @Override
+    public void onBackPressed() {}
+    public void pressPlayGame(View v){
+        Intent intent = new Intent(this, Game.class);
+        startActivity(intent);
+    }
+    public void pressHowToPlay(View v){
+        Intent intent = new Intent(this, HowToPlay.class);
+        startActivity(intent);
+    }
+    public void pressHighScore(View v){
+        Intent intent = new Intent(this, HighScore.class);
+        startActivity(intent);
+    }
+    public  void pressExit(View v){
+        finish();
     }
 }

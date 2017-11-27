@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context="com.example.poker.HowToPlay"
-    android:background="@drawable/casino2">
+    android:background="@drawable/poker3"
+    android:padding="16dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,14 +15,60 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+
+                android:fontFamily="@font/arapey_italic"
+                android:text="How to Play"
+                android:textColor="#FFFFFF"
+                android:textSize="40dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="
+        Poker จะประกอบไปด้วยไพ่สำรับมาตราฐาน 52 ใบโดยค่าของไพ่จะเรียงลำดับจากมากไปน้อยดังนี้ ace,king,queen,jack,10,9,8,7,6,5,4,3,2 และดอกของไพ่จะเรียงลำดับจะมากไปน้อยดังนี้ โพดำ โพแดง ข้าวหลามตัด ดอกจิก\n       เป้าหมายในการเล่นคือสร้างไพ่ในมือให้ที่ดีที่สุดจากไพ่ที่ได้รับแจกทั้ง 5 ใบ โดยความสูงของไพ่จะเรียงลำดับตามอันดับไพ่(Hand Ranks)\n       เมื่อเริ่มเกมจะได้รับชิปจำนวน 5000 ชิปและไพ่จำนวน 5 ใบ
+ผู้เล่นสามารถวางเดิมพัน(bet)ได้ในขณะที่ไพ่ยังคว่ำอยู่เท่านั้น โดยในการเล่นแต่ละครั้งจะต้องมีการวางเดิมพัน การวางเดิมพันจะเริ่มต้นที่ 1000 ชิปเสมอและสามารถวางเดิมพันเพิ่มได้
+เมื่อวางเดิมพันเสร็จเรียบร้อยไพ่จะเปิด ผู้จะเล่นสามรถเลือกเก็บไพ่ได้ 0-5 ใบ โดยไพ่ที่ไม่ถูกเลือกเก็บจะได้รับการจั่วไพ่ใบใหม่\n      ผู้เล่นจะได้รับชิปเป็นรางวัลจากการเล่นแต่ละครั้งโดยคำนวณจาก เงินเดิมพัน x อันดับไพ่ดังนี้"
+                android:textColor="#FFFFFF"
+                android:textSize="15dp"
+                android:layout_marginBottom="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:textSize="20dp"
+                    android:textColor="#FFFFFF"
+                    android:text="Royal Straight Flush\nStraight Flush\nFour of a kind\nFull House\nFlush\nStraight\nThree of a kind\nTwo pair"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="#FFFFFF"
+                    android:text="x250\nx60\nx25\nx20\nx10\nx5\nx3\nx1"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hand Ranks"
-                android:textSize="40dp"
-                android:gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
-                android:textColor="#FFFFFF"/>
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/arapey_italic"
+                android:gravity="center_horizontal"
+                android:text="Hand Ranks"
+                android:textColor="#FFFFFF"
+                android:textSize="30dp"
+                android:textStyle="bold" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -220,7 +265,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_marginLeft="10dp"
-                android:text="ไพ่ที่มีดอกเดียวกัน 5 ใบ ในกรณีที่มีฟลัชมากกว่า 1 คนให้นับใบที่มากที่สุด"
+                android:text="ไพ่ที่มีดอกเดียวกัน 5 ใบ ในกรณีที่มี Flush มากกว่า 1 คนให้นับใบที่มากที่สุด"
                 android:textSize="15dp"
                 android:textColor="#FFFFFF"/>
             <LinearLayout
@@ -487,5 +532,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

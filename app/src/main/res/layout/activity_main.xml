@@ -1,25 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.poker.MainActivity">
+    tools:context="com.example.poker.MainActivity"
+    android:background="@drawable/poker2"
+    android:padding="16dp">
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnRandom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RANDOM"
-        android:layout_centerInParent="true"/>
-    <Button
-        android:id="@+id/btnHowTo"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnRandom"
-        android:text="How To Play"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
 
+            android:fontFamily="@font/caesar_dressing"
+            android:text="Poker"
+            android:textColor="#FFFFFF"
+            android:textSize="70dp"
+            android:textStyle="normal" />
 
+        <TextView
+            android:id="@+id/playgame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/annie_use_your_telescope"
+            android:onClick="pressPlayGame"
+            android:text="Play Game"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/howtoplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/annie_use_your_telescope"
+            android:onClick="pressHowToPlay"
+            android:text="How to Play"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/highscore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/annie_use_your_telescope"
+            android:onClick="pressHighScore"
+            android:text="High Score"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/quit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/annie_use_your_telescope"
+            android:onClick="pressExit"
+            android:text="Quit"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </RelativeLayout>
