@@ -1,5 +1,7 @@
 package com.example.poker;
 
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,8 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.poker.model.Chips;
@@ -47,10 +56,19 @@ public class Game extends AppCompatActivity {
     int stage = 1;
     private final ChipsData chipsData = ChipsData.getInstance();   // global
 
+    ImageView card1;
+    ImageView card2;
+    ImageView card3;
+    ImageView card4;
+    ImageView card5;
+    RelativeLayout background;
+    AccelerateDecelerateInterpolator accelerateDecelerateInterpolator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        background = (RelativeLayout) findViewById(R.id.background);
         betgame();
         newgame();
     }
@@ -62,6 +80,9 @@ public class Game extends AppCompatActivity {
         if (stage == 1){
             ((TextView) findViewById(R.id.msg)).setText("");
             betgame();
+            dealCard(accelerateDecelerateInterpolator);
+            dealCardFromLeft(accelerateDecelerateInterpolator);
+            dealCardFromRight(accelerateDecelerateInterpolator);
         }
         else if(!isDeal && stage == 3){
             if(!keep1 || !keep2 || !keep3 || !keep4 || !keep5){
@@ -69,6 +90,7 @@ public class Game extends AppCompatActivity {
                 showCard();
             }
             message = computeGame();
+            isDeal = true;
             calPoint();
             ((TextView) findViewById(R.id.msg)).setText(message);
             ((Button)findViewById(R.id.btnPlay)).setText("DEAL");
@@ -81,6 +103,7 @@ public class Game extends AppCompatActivity {
             stage = 1;
         }
         else if(stage == 2){
+            isDeal = false;
             drawCard();
             ((TextView) findViewById(R.id.msg)).setText("");
             ((Button)findViewById(R.id.btnPlay)).setText("OK");
@@ -131,12 +154,13 @@ public class Game extends AppCompatActivity {
 
     public void drawCard(){
         //Card 1
+        card1 = ((ImageView) findViewById(R.id.card1));
         suit1 = randSuit();
         num1 = randNum();
         nameOfCard1 = "card_"+num1+suit1;
-        ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
 
         //Card 2
+        card2 = ((ImageView) findViewById(R.id.card2));
         suit2 = randSuit();
         num2 = randNum();
         while(suit2 == suit1 && num2 == num1){
@@ -144,9 +168,9 @@ public class Game extends AppCompatActivity {
             num2 = randNum();
         }
         nameOfCard2 = "card_"+num2+suit2;
-        ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
 
         //Card 3
+        card3 = ((ImageView) findViewById(R.id.card3));
         suit3 = randSuit();
         num3 = randNum();
         while((suit3 == suit1 && num3 == num1)||(suit3 == suit2 && num3 == num2)){
@@ -154,9 +178,9 @@ public class Game extends AppCompatActivity {
             num3 = randNum();
         }
         nameOfCard3 = "card_"+num3+suit3;
-        ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
 
         //Card 4
+        card4 = ((ImageView) findViewById(R.id.card4));
         suit4 = randSuit();
         num4 = randNum();
         while((suit4 == suit1 && num4 == num1)||(suit4 == suit2 && num4 == num2) || (suit4 == suit3 && num4 == num3)){
@@ -164,9 +188,9 @@ public class Game extends AppCompatActivity {
             num4 = randNum();
         }
         nameOfCard4 = "card_"+num4+suit4;
-        ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
 
         //Card 5
+        card5 = ((ImageView) findViewById(R.id.card5));
         suit5 = randSuit();
         num5 = randNum();
         while((suit5 == suit1 && num5 == num1)||(suit5 == suit2 && num5 == num2) || (suit5 == suit3 && num5 == num3) || (suit5 == suit4 && num5 == num4)){
@@ -174,7 +198,247 @@ public class Game extends AppCompatActivity {
             num5 = randNum();
         }
         nameOfCard5 = "card_"+num5+suit5;
-        ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
+
+        //make card1 fade out then fade in by setting duration
+        Animation fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(400);
+        fadeOut.setFillAfter(true);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //not do anything in this period
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //when fade out end set new image to card1 then start fade in
+                card1.setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
+                Animation fadeIn = new AlphaAnimation(0,1);
+                fadeIn.setInterpolator(new DecelerateInterpolator());
+                fadeIn.setDuration(700);
+                fadeIn.setFillAfter(true);
+                card1.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //do just one time so this period is not necessary
+            }
+        });
+        card1.startAnimation(fadeOut);
+
+        //make card2 fade out then fade in by setting duration
+        fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(600);
+        fadeOut.setFillAfter(true);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //not do anything in this period
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //when fade out end set new image to card2 then start fade in
+                card2.setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
+                Animation fadeIn = new AlphaAnimation(0,1);
+                fadeIn.setInterpolator(new DecelerateInterpolator());
+                fadeIn.setDuration(900);
+                fadeIn.setFillAfter(true);
+                card2.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //do just one time so this period is not necessary
+            }
+        });
+        card2.startAnimation(fadeOut);
+
+        //make card3 fade out then fade in by setting duration
+        fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(200);
+        fadeOut.setFillAfter(true);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //not do anything in this period
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //when fade out end set new image to card3 then start fade in
+                card3.setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
+                Animation fadeIn = new AlphaAnimation(0,1);
+                fadeIn.setInterpolator(new DecelerateInterpolator());
+                fadeIn.setDuration(500);
+                fadeIn.setFillAfter(true);
+                card3.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //do just one time so this period is not necessary
+            }
+        });
+        card3.startAnimation(fadeOut);
+
+        //make card4 fade out then fade in by setting duration
+        fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(800);
+        fadeOut.setFillAfter(true);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //not do anything in this period
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //when fade out end set new image to card1 then start fade in
+                card4.setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
+                Animation fadeIn = new AlphaAnimation(0,1);
+                fadeIn.setInterpolator(new DecelerateInterpolator());
+                fadeIn.setDuration(1100);
+                fadeIn.setFillAfter(true);
+                card4.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //do just one time so this period is not necessary
+            }
+        });
+        card4.startAnimation(fadeOut);
+
+        //make card5 fade out then fade in by setting duration
+        fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(0);
+        fadeOut.setFillAfter(true);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                //not do anything in this period
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                //when fade out end set new image to card1 then start fade in
+                card5.setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
+                Animation fadeIn = new AlphaAnimation(0,1);
+                fadeIn.setInterpolator(new DecelerateInterpolator());
+                fadeIn.setDuration(300);
+                fadeIn.setFillAfter(true);
+                card5.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //do just one time so this period is not necessary
+            }
+        });
+        card5.startAnimation(fadeOut);
+    }
+
+    //animation that show dealing card that process only Y axis
+
+    public void dealCard(TimeInterpolator timeInterpolator)
+    {
+        //float w = (float)background.getWidth();
+        float h = (float)background.getHeight();
+        float card1PropertyEnd = 0f;
+        float card1PropertyStart = -(h/2 - (float)card1.getHeight()/2);
+        String propertyYname = "translationY";
+        ObjectAnimator objectAnimator
+                = ObjectAnimator.ofFloat(card1, propertyYname, card1PropertyStart, card1PropertyEnd);
+        objectAnimator.setDuration(400);
+        objectAnimator.setInterpolator(timeInterpolator);
+        objectAnimator.start();
+    }
+
+    //animation that show dealing card that process X,Y axis that be minus value
+
+    public void dealCardFromLeft(TimeInterpolator timeInterpolator)
+    {
+        float w = (float)background.getWidth();
+        float h = (float)background.getHeight();
+        float card3PropertyEnd = 0f;
+        float card3PropertyStart = -(h/2 - (float)card3.getHeight()/2);
+        float card3PropertyEndX = 0f;
+        float card3PropertyStartX = -(w/5 - (float)card3.getWidth()/5);
+        String propertyYname = "translationY";
+        String propertyXname = "translationX";
+        ObjectAnimator objectAnimator
+                = ObjectAnimator.ofFloat(card3, propertyYname, card3PropertyStart, card3PropertyEnd);
+        ObjectAnimator objectAnimatorX
+                = ObjectAnimator.ofFloat(card3, propertyXname,card3PropertyStartX,card3PropertyEndX );
+        objectAnimator.setDuration(400);
+        objectAnimatorX.setDuration(400);
+        objectAnimator.setInterpolator(timeInterpolator);
+        objectAnimatorX.setInterpolator(timeInterpolator);
+        objectAnimator.start();
+        objectAnimatorX.start();
+
+        float card5PropertyEnd = 0f;
+        float card5PropertyStart = -(h/2 - (float)card5.getHeight()/2);
+        float card5PropertyEndX = 0f;
+        float card5PropertyStartX = -(w/2 - (float)card5.getWidth()/2);
+
+        ObjectAnimator objectAnimator2
+                = ObjectAnimator.ofFloat(card5, propertyYname, card5PropertyStart, card5PropertyEnd);
+        ObjectAnimator objectAnimatorX2
+                = ObjectAnimator.ofFloat(card5, propertyXname,card5PropertyStartX,card5PropertyEndX );
+        objectAnimator2.setDuration(400);
+        objectAnimatorX2.setDuration(400);
+        objectAnimator2.setInterpolator(timeInterpolator);
+        objectAnimatorX2.setInterpolator(timeInterpolator);
+        objectAnimator2.start();
+        objectAnimatorX2.start();
+    }
+
+    //animation that show dealing card that process X,Y axis that be plus value
+
+    public void dealCardFromRight(TimeInterpolator timeInterpolator)
+    {
+        float w = (float)background.getWidth();
+        float h = (float)background.getHeight();
+        float card2PropertyEnd = 0f;
+        float card2PropertyStart = -(h/2 - (float)card2.getHeight()/2);
+        float card2PropertyEndX = 0f;
+        float card2PropertyStartX = (w/5 - (float)card2.getWidth()/5);
+        String propertyYname = "translationY";
+        String propertyXname = "translationX";
+        ObjectAnimator objectAnimator
+                = ObjectAnimator.ofFloat(card2, propertyYname, card2PropertyStart, card2PropertyEnd);
+        ObjectAnimator objectAnimatorX
+                = ObjectAnimator.ofFloat(card2, propertyXname,card2PropertyStartX,card2PropertyEndX );
+        objectAnimator.setDuration(400);
+        objectAnimatorX.setDuration(400);
+        objectAnimator.setInterpolator(timeInterpolator);
+        objectAnimatorX.setInterpolator(timeInterpolator);
+        objectAnimator.start();
+        objectAnimatorX.start();
+
+        float card4PropertyEnd = 0f;
+        float card4PropertyStart = -(h/2 - (float)card4.getHeight()/2);
+        float card4PropertyEndX = 0f;
+        float card4PropertyStartX = (w/2 - (float)card4.getWidth()/2);
+
+        ObjectAnimator objectAnimator2
+                = ObjectAnimator.ofFloat(card4, propertyYname, card4PropertyStart, card4PropertyEnd);
+        ObjectAnimator objectAnimatorX2
+                = ObjectAnimator.ofFloat(card4, propertyXname,card4PropertyStartX,card4PropertyEndX );
+        objectAnimator2.setDuration(400);
+        objectAnimatorX2.setDuration(400);
+        objectAnimator2.setInterpolator(timeInterpolator);
+        objectAnimatorX2.setInterpolator(timeInterpolator);
+        objectAnimator2.start();
+        objectAnimatorX2.start();
     }
 
     public void pickCard1(){
