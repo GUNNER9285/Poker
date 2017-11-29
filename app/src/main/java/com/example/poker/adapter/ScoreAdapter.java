@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.poker.R;
@@ -17,34 +16,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by GUNNER on 27/11/2560.
+ * Created by GUNNER on 28/11/2560.
  */
 
-public class ScoreListAdapter extends ArrayAdapter<ScoreItem>{
-    private Context mContext;
-    private int mLayoutResId;
-    private ArrayList<ScoreItem> mScoreItemList;
+public class ScoreAdapter extends ArrayAdapter<ScoreItem>{
+    private Context context;
+    private int layoutResId;
+    ArrayList<ScoreItem> scoreItemList;
 
-    public ScoreListAdapter(@NonNull Context context, int layoutResId, @NonNull ArrayList<ScoreItem> scoreItemList) {
+    public ScoreAdapter(@NonNull Context context, int layoutResId, @NonNull ArrayList<ScoreItem> scoreItemList) {
         super(context, layoutResId, scoreItemList);
-        this.mContext = context;
-        this.mLayoutResId = layoutResId;
-        this.mScoreItemList = scoreItemList;
+        this.context = context;
+        this.layoutResId = layoutResId;
+        this.scoreItemList = scoreItemList;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View itemLayout = inflater.inflate(mLayoutResId, null);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View itemLayout = inflater.inflate(layoutResId,null);
 
-        ScoreItem item = mScoreItemList.get(position);
+        ScoreItem item = scoreItemList.get(position);
 
         TextView rankText = itemLayout.findViewById(R.id.rank_id_text_view);
         TextView scoreText = itemLayout.findViewById(R.id.score_id_text_view);
 
-        rankText.setText(item.rank);
-        scoreText.setText(item.score);
+        rankText.setText(String.valueOf(item.rank));
+        scoreText.setText(String.valueOf(item.score));
 
         return itemLayout;
     }

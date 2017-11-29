@@ -28,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HighScore.class);
         startActivity(intent);
     }
-    public  void pressExit(View v){
-        finish();
+    public  void pressExit(View v) {
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory( Intent.CATEGORY_HOME );
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
     }
 }

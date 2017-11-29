@@ -3,6 +3,7 @@ package com.example.poker;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -141,8 +142,10 @@ public class Game extends AppCompatActivity {
         isDeal = true;
     }
     public void endGame(View v){
-        Intent end = new Intent(Game.this, HighScore.class);
-        startActivity(end);
+        int point = chipsData.point + chipsData.bet;
+        Intent intent = new Intent(Game.this, HighScore.class);
+        intent.putExtra("score", point);
+        startActivity(intent);
     }
 
     public int randNum(){
@@ -670,6 +673,9 @@ public class Game extends AppCompatActivity {
         betTextView.setText(betText);
     }
     public void bet1000(View v){
+        if(chipsData.point < 1000){
+            return;
+        }
         if(isDeal){
             chipsData.bet += 1000;
             chipsData.point -= 1000;
@@ -677,6 +683,9 @@ public class Game extends AppCompatActivity {
         computeChips();
     }
     public void bet2000(View v){
+        if(chipsData.point < 2000){
+            return;
+        }
         if(isDeal){
             chipsData.bet += 2000;
             chipsData.point -= 2000;
@@ -684,6 +693,9 @@ public class Game extends AppCompatActivity {
         computeChips();
     }
     public void bet3000(View v){
+        if(chipsData.point < 3000){
+            return;
+        }
         if(isDeal){
             chipsData.bet += 3000;
             chipsData.point -= 3000;
@@ -691,6 +703,9 @@ public class Game extends AppCompatActivity {
         computeChips();
     }
     public void bet5000(View v){
+        if(chipsData.point < 5000){
+            return;
+        }
         if(isDeal){
             chipsData.bet += 5000;
             chipsData.point -= 5000;
@@ -698,6 +713,9 @@ public class Game extends AppCompatActivity {
         computeChips();
     }
     public void bet10000(View v){
+        if(chipsData.point < 10000){
+            return;
+        }
         if(isDeal){
             chipsData.bet += 10000;
             chipsData.point -= 10000;
@@ -747,8 +765,13 @@ public class Game extends AppCompatActivity {
     }
     public void checkPoint(){
         if(chipsData.point < 0){
-            Intent end = new Intent(Game.this, HighScore.class);
-            startActivity(end);
+            ((Button)findViewById(R.id.btnPlay)).setVisibility(Button.INVISIBLE);
+            chipsData.bet = 0;
+            AlertDialog.Builder dialog = new AlertDialog.Builder(Game.this);
+            dialog.setTitle("GAME OVER");
+            dialog.setMessage("จำนวน Chip ของคุณหมดแล้ว");
+            dialog.show();
+
         }
     }
 
