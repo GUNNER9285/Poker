@@ -21,42 +21,42 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class Game extends AppCompatActivity {
-    String nameOfCard1 = "";
-    String nameOfCard2 = "";
-    String nameOfCard3 = "";
-    String nameOfCard4 = "";
-    String nameOfCard5 = "";
+    String nameOfCard1 = ""; // เก็บชื่อไพ่ ใบที่ 1
+    String nameOfCard2 = ""; // เก็บชื่อไพ่ ใบที่ 2
+    String nameOfCard3 = ""; // เก็บชื่อไพ่ ใบที่ 3
+    String nameOfCard4 = ""; // เก็บชื่อไพ่ ใบที่ 4
+    String nameOfCard5 = ""; // เก็บชื่อไพ่ ใบที่ 5
 
-    int suit1 = 0;
-    int suit2 = 0;
-    int suit3 = 0;
-    int suit4 = 0;
-    int suit5 = 0;
+    int suit1 = 0; // เก็บดอกไพ่ ใบที่ 1
+    int suit2 = 0; // เก็บดอกไพ่ ใบที่ 2
+    int suit3 = 0; // เก็บดอกไพ่ ใบที่ 3
+    int suit4 = 0; // เก็บดอกไพ่ ใบที่ 4
+    int suit5 = 0; // เก็บดอกไพ่ ใบที่ 5
 
-    int num1 = 0;
-    int num2 = 0;
-    int num3 = 0;
-    int num4 = 0;
-    int num5 = 0;
+    int num1 = 0; // เก็บเลขไพ่ ใบที่ 1
+    int num2 = 0; // เก็บเลขไพ่ ใบที่ 2
+    int num3 = 0; // เก็บเลขไพ่ ใบที่ 3
+    int num4 = 0; // เก็บเลขไพ่ ใบที่ 4
+    int num5 = 0; // เก็บเลขไพ่ ใบที่ 5
 
-    boolean keep1 = false;
-    boolean keep2 = false;
-    boolean keep3 = false;
-    boolean keep4 = false;
-    boolean keep5 = false;
+    boolean keep1 = false; // เก็บสถานะ keepไพ่ ใบที่ 1
+    boolean keep2 = false; // เก็บสถานะ keepไพ่ ใบที่ 2
+    boolean keep3 = false; // เก็บสถานะ keepไพ่ ใบที่ 3
+    boolean keep4 = false; // เก็บสถานะ keepไพ่ ใบที่ 4
+    boolean keep5 = false; // เก็บสถานะ keepไพ่ ใบที่ 5
 
-    String message = "";
-    boolean isDeal = true;
-    int stage = 1;
-    private final ChipsData chipsData = ChipsData.getInstance();   // global
+    String message = "";  // เก็บข้อความเพื่อแสดง ผลลัพธ์ของเกม
+    boolean isDeal = true; // เก็บสถานะช่วง Deal
+    int stage = 1; // เก็บสถานะว่า อยู่ขั้นตอนใดของการเล่น
+    private final ChipsData chipsData = ChipsData.getInstance();   // ตัวแปร global ของค่าChip และฺBet
 
-    ImageView card1;
-    ImageView card2;
-    ImageView card3;
-    ImageView card4;
-    ImageView card5;
-    RelativeLayout background;
-    AccelerateDecelerateInterpolator accelerateDecelerateInterpolator;
+    ImageView card1; // เก็บ ImageView ของไพ่ ใบที่ 1
+    ImageView card2; // เก็บ ImageView ของไพ่ ใบที่ 2
+    ImageView card3; // เก็บ ImageView ของไพ่ ใบที่ 3
+    ImageView card4; // เก็บ ImageView ของไพ่ ใบที่ 4
+    ImageView card5; // เก็บ ImageView ของไพ่ ใบที่ 5
+    RelativeLayout background; // View ของ Layout ที่ใช้
+    AccelerateDecelerateInterpolator accelerateDecelerateInterpolator; // Animation Object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,29 +68,31 @@ public class Game extends AppCompatActivity {
         card3 = ((ImageView) findViewById(R.id.card3));
         card4 = ((ImageView) findViewById(R.id.card4));
         card5 = ((ImageView) findViewById(R.id.card5));
-        betgame();
-        newgame();
+        betgame();  // เข้าสู่ช่วง bet
+        newgame(); // set ค่า Chip กับ Bet เมื่อเริ่มเกม
     }
 
+    // ป้องกันไม่ให้ผู้เล่นกด back
     @Override
     public void onBackPressed() {}
 
+    // เมื่อกดปุ่ม Bet / OK / Deal เมธอดนี้ จะทำงาน
     public void playGame(View v){
-        if (stage == 1){
+        if (stage == 1){ // stage 1 คือ ช่วงวางเดิมพันของเกม
             ((TextView) findViewById(R.id.msg)).setText("");
             betgame();
             dealCard(accelerateDecelerateInterpolator);
             dealCardFromLeft(accelerateDecelerateInterpolator);
             dealCardFromRight(accelerateDecelerateInterpolator);
         }
-        else if(!isDeal && stage == 3){
-            if(!keep1 || !keep2 || !keep3 || !keep4 || !keep5){
+        else if(!isDeal && stage == 3){ // stage 3 คือ ช่วงแสดงผลของเกม
+            if(!keep1 || !keep2 || !keep3 || !keep4 || !keep5){ // เปลี่ยนไพ่ใบที่ไม่ได้เลือกไว้
                 keepCard();
                 showCard();
             }
-            message = computeGame();
+            message = computeGame(); // set ผลลัพธ์ของเกม
             isDeal = true;
-            calPoint();
+            calPoint(); // คำนวน Chip ที่ได้เมื่อจบเกม
             ((TextView) findViewById(R.id.msg)).setText(message);
             ((Button)findViewById(R.id.btnPlay)).setText("DEAL");
             ((Button)findViewById(R.id.btn1000)).setVisibility(Button.INVISIBLE);
@@ -102,9 +104,9 @@ public class Game extends AppCompatActivity {
             stage = 1;
 
         }
-        else if(stage == 2){
+        else if(stage == 2){ // stage 2 คือ ช่วงเลือกว่าจะเก็บไพ่ใบไหนไว้
             isDeal = false;
-            drawCard();
+            drawCard(); // สุ่มไพ่ที่จะได้ครั้งแรก
             ((TextView) findViewById(R.id.msg)).setText("");
             ((Button)findViewById(R.id.btnPlay)).setText("OK");
             ((Button)findViewById(R.id.btn1000)).setVisibility(Button.INVISIBLE);
@@ -117,6 +119,7 @@ public class Game extends AppCompatActivity {
         }
     }
 
+    // ช่วง bet ของเกม
     public void betgame(){
         if(stage == 1){
             ((TextView) findViewById(R.id.msg)).setText("Place your bets.");
@@ -136,32 +139,35 @@ public class Game extends AppCompatActivity {
             stage = 2;
         }
     }
+    // set ค่าเริ่มเกม เมื่อเปิดหน้านี้
     public void newgame(){
         chipsData.point = 4000;
         chipsData.bet = 1000;
         isDeal = true;
     }
+    // เมื่อกดปุ่ม End Game
     public void endGame(View v){
-        int point = chipsData.point + chipsData.bet;
+        int point = chipsData.point + chipsData.bet; // เก็บค่า Chip + ฺBet เพื่อนำไปเป็นคะแนน
         Intent intent = new Intent(Game.this, HighScore.class);
         intent.putExtra("score", point);
         startActivity(intent);
     }
-
+    // สุ่มเลขไพ่
     public int randNum(){
         return 1 + (int) Math.round(Math.random() * (13 - 1));
     }
+    // สุ่มดอกไพ่
     public int randSuit(){
         return 1 + (int) Math.round(Math.random() * (4 - 1));
     }
-
+    // สุ่มไพ่ครั้งแรก
     public void drawCard(){
-        //Card 1
+        //สุ่มไพ่ ใบที่ 1
         suit1 = randSuit();
         num1 = randNum();
         nameOfCard1 = "card_"+num1+suit1;
 
-        //Card 2
+        //สุ่มไพ่ ใบที่ 2
         suit2 = randSuit();
         num2 = randNum();
         while(suit2 == suit1 && num2 == num1){
@@ -170,28 +176,34 @@ public class Game extends AppCompatActivity {
         }
         nameOfCard2 = "card_"+num2+suit2;
 
-        //Card 3
+        //สุ่มไพ่ ใบที่ 3
         suit3 = randSuit();
         num3 = randNum();
-        while((suit3 == suit1 && num3 == num1)||(suit3 == suit2 && num3 == num2)){
+        while((suit3 == suit1 && num3 == num1)||
+                (suit3 == suit2 && num3 == num2)){
             suit3 = randSuit();
             num3 = randNum();
         }
         nameOfCard3 = "card_"+num3+suit3;
 
-        //Card 4
+        //สุ่มไพ่ ใบที่ 4
         suit4 = randSuit();
         num4 = randNum();
-        while((suit4 == suit1 && num4 == num1)||(suit4 == suit2 && num4 == num2) || (suit4 == suit3 && num4 == num3)){
+        while((suit4 == suit1 && num4 == num1)||
+                (suit4 == suit2 && num4 == num2) ||
+                (suit4 == suit3 && num4 == num3)){
             suit4 = randSuit();
             num4 = randNum();
         }
         nameOfCard4 = "card_"+num4+suit4;
 
-        //Card 5
+        //สุ่มไพ่ ใบที่ 5
         suit5 = randSuit();
         num5 = randNum();
-        while((suit5 == suit1 && num5 == num1)||(suit5 == suit2 && num5 == num2) || (suit5 == suit3 && num5 == num3) || (suit5 == suit4 && num5 == num4)){
+        while((suit5 == suit1 && num5 == num1)||
+                (suit5 == suit2 && num5 == num2) ||
+                (suit5 == suit3 && num5 == num3) ||
+                (suit5 == suit4 && num5 == num4)){
             suit5 = randSuit();
             num5 = randNum();
         }
@@ -343,55 +355,73 @@ public class Game extends AppCompatActivity {
         card5.startAnimation(fadeOut);
     }
 
-    //animation that show dealing card that process only Y axis
-
+    //แสดง Animation ในส่วนของการแจกไพ่ในการเคลื่อนที่ในเเนวเเกน Y (ไพ่ใบที่1)
     public void dealCard(TimeInterpolator timeInterpolator)
     {
-        //float w = (float)background.getWidth();
+        //ความสูงของ Layout
         float h = (float)background.getHeight();
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ของไพ่ใบที่1
         float card1PropertyEnd = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ของไพ่ใบที่1
         float card1PropertyStart = -(h/2 - (float)card1.getHeight()/2);
+        //กำหนดการเคลื่อนที่เป็นแนวแกน Y
         String propertyYname = "translationY";
         ObjectAnimator objectAnimator
                 = ObjectAnimator.ofFloat(card1, propertyYname, card1PropertyStart, card1PropertyEnd);
+        //กำหนดระยะเวลาการทำ Animation ของไพ่ใบที่1
         objectAnimator.setDuration(400);
         objectAnimator.setInterpolator(timeInterpolator);
         objectAnimator.start();
     }
 
-    //animation that show dealing card that process X,Y axis that be minus value
-
+    //แสดง Animation ในส่วนของการแจกไพ่ในการเคลื่อนที่ในเเนวเเกน X,Y ที่มีค่าเป็นลบ (ไพ่ใบที่3,5)
     public void dealCardFromLeft(TimeInterpolator timeInterpolator)
     {
+        //ความกว้างของ Layout
         float w = (float)background.getWidth();
+        //ความสูงของ Layout
         float h = (float)background.getHeight();
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่3
         float card3PropertyEnd = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่3
         float card3PropertyStart = -(h/2 - (float)card3.getHeight()/2);
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่3
         float card3PropertyEndX = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่3
         float card3PropertyStartX = -(w/5 - (float)card3.getWidth()/5);
+        //กำหนดการเคลื่อนที่เป็นแนวแกน Y
         String propertyYname = "translationY";
+        //กำหนดการเคลื่อนที่เป็นแนวแกน X
         String propertyXname = "translationX";
         ObjectAnimator objectAnimator
                 = ObjectAnimator.ofFloat(card3, propertyYname, card3PropertyStart, card3PropertyEnd);
         ObjectAnimator objectAnimatorX
                 = ObjectAnimator.ofFloat(card3, propertyXname,card3PropertyStartX,card3PropertyEndX );
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน Y ของไพ่ใบที่3
         objectAnimator.setDuration(400);
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน X ของไพ่ใบที่3
         objectAnimatorX.setDuration(400);
         objectAnimator.setInterpolator(timeInterpolator);
         objectAnimatorX.setInterpolator(timeInterpolator);
         objectAnimator.start();
         objectAnimatorX.start();
 
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่5
         float card5PropertyEnd = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่5
         float card5PropertyStart = -(h/2 - (float)card5.getHeight()/2);
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่5
         float card5PropertyEndX = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่5
         float card5PropertyStartX = -(w/2 - (float)card5.getWidth()/2);
 
         ObjectAnimator objectAnimator2
                 = ObjectAnimator.ofFloat(card5, propertyYname, card5PropertyStart, card5PropertyEnd);
         ObjectAnimator objectAnimatorX2
                 = ObjectAnimator.ofFloat(card5, propertyXname,card5PropertyStartX,card5PropertyEndX );
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน Y ของไพ่ใบที่5
         objectAnimator2.setDuration(400);
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน X ของไพ่ใบที่5
         objectAnimatorX2.setDuration(400);
         objectAnimator2.setInterpolator(timeInterpolator);
         objectAnimatorX2.setInterpolator(timeInterpolator);
@@ -399,39 +429,53 @@ public class Game extends AppCompatActivity {
         objectAnimatorX2.start();
     }
 
-    //animation that show dealing card that process X,Y axis that be plus value
-
+    //แสดง Animation ในส่วนของการแจกไพ่ในการเคลื่อนที่ในเเนวเเกน X,Y ที่มีค่าเป็นบวก (ไพ่ใบที่2,4)
     public void dealCardFromRight(TimeInterpolator timeInterpolator)
     {
+        //ความกว้างของ Layout
         float w = (float)background.getWidth();
+        //ความสูงของ Layout
         float h = (float)background.getHeight();
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่2
         float card2PropertyEnd = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่2
         float card2PropertyStart = -(h/2 - (float)card2.getHeight()/2);
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่2
         float card2PropertyEndX = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่2
         float card2PropertyStartX = (w/5 - (float)card2.getWidth()/5);
+        //กำหนดการเคลื่อนที่เป็นแนวแกน Y
         String propertyYname = "translationY";
+        //กำหนดการเคลื่อนที่เป็นแนวแกน X
         String propertyXname = "translationX";
         ObjectAnimator objectAnimator
                 = ObjectAnimator.ofFloat(card2, propertyYname, card2PropertyStart, card2PropertyEnd);
         ObjectAnimator objectAnimatorX
                 = ObjectAnimator.ofFloat(card2, propertyXname,card2PropertyStartX,card2PropertyEndX );
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน Y ของไพ่ใบที่2
         objectAnimator.setDuration(400);
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน X ของไพ่ใบที่2
         objectAnimatorX.setDuration(400);
         objectAnimator.setInterpolator(timeInterpolator);
         objectAnimatorX.setInterpolator(timeInterpolator);
         objectAnimator.start();
         objectAnimatorX.start();
-
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่4
         float card4PropertyEnd = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน Y ของไพ่ใบที่4
         float card4PropertyStart = -(h/2 - (float)card4.getHeight()/2);
+        //ตำแหน่งสิ้นสุดของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่4
         float card4PropertyEndX = 0f;
+        //ตำแหน่งเริ่มต้นของการเเสดง Animation ในแนวแกน X ของไพ่ใบที่4
         float card4PropertyStartX = (w/2 - (float)card4.getWidth()/2);
 
         ObjectAnimator objectAnimator2
                 = ObjectAnimator.ofFloat(card4, propertyYname, card4PropertyStart, card4PropertyEnd);
         ObjectAnimator objectAnimatorX2
                 = ObjectAnimator.ofFloat(card4, propertyXname,card4PropertyStartX,card4PropertyEndX );
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน Y ของไพ่ใบที่2
         objectAnimator2.setDuration(400);
+        //กำหนดระยะเวลาการทำ Animation ในแนวแกน X ของไพ่ใบที่2
         objectAnimatorX2.setDuration(400);
         objectAnimator2.setInterpolator(timeInterpolator);
         objectAnimatorX2.setInterpolator(timeInterpolator);
@@ -439,6 +483,7 @@ public class Game extends AppCompatActivity {
         objectAnimatorX2.start();
     }
 
+    // สุ่มไพ่ใบที่ 1 ใหม่
     public void pickCard1(){
         suit1 = randSuit();
         num1 = randNum();
@@ -453,6 +498,7 @@ public class Game extends AppCompatActivity {
         nameOfCard1 = "card_"+num1+suit1;
         ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
     }
+    // สุ่มไพ่ใบที่ 2 ใหม่
     public void pickCard2(){
         suit2 = randSuit();
         num2 = randNum();
@@ -467,6 +513,7 @@ public class Game extends AppCompatActivity {
         nameOfCard2 = "card_"+num2+suit2;
         ((ImageView) findViewById(R.id.card2)).setImageResource(getResources().getIdentifier(nameOfCard2,"drawable",getPackageName()));
     }
+    // สุ่มไพ่ใบที่ 3 ใหม่
     public void pickCard3(){
         suit3 = randSuit();
         num3 = randNum();
@@ -481,6 +528,7 @@ public class Game extends AppCompatActivity {
         nameOfCard3 = "card_"+num3+suit3;
         ((ImageView) findViewById(R.id.card3)).setImageResource(getResources().getIdentifier(nameOfCard3,"drawable",getPackageName()));
     }
+    // สุ่มไพ่ใบที่ 4 ใหม่
     public void pickCard4(){
         suit4 = randSuit();
         num4 = randNum();
@@ -495,6 +543,7 @@ public class Game extends AppCompatActivity {
         nameOfCard4 = "card_"+num4+suit4;
         ((ImageView) findViewById(R.id.card4)).setImageResource(getResources().getIdentifier(nameOfCard4,"drawable",getPackageName()));
     }
+    // สุ่มไพ่ใบที่ 5 ใหม่
     public void pickCard5(){
         suit5 = randSuit();
         num5 = randNum();
@@ -510,6 +559,7 @@ public class Game extends AppCompatActivity {
         ((ImageView) findViewById(R.id.card5)).setImageResource(getResources().getIdentifier(nameOfCard5,"drawable",getPackageName()));
     }
 
+    // เมื่อแตะที่ไพ่ ให้ไพ่ใบที่ 1 ขึ้น KEEP
     public void keepCard1(View v){
         if(!isDeal){
             if (!keep1){
@@ -522,6 +572,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    // เมื่อแตะที่ไพ่ ให้ไพ่ใบที่ 2 ขึ้น KEEP
     public void keepCard2(View v){
         if(!isDeal){
             if (!keep2){
@@ -534,6 +585,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    // เมื่อแตะที่ไพ่ ให้ไพ่ใบที่ 3 ขึ้น KEEP
     public void keepCard3(View v){
         if(!isDeal){
             if (!keep3){
@@ -546,6 +598,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    // เมื่อแตะที่ไพ่ ให้ไพ่ใบที่ 4 ขึ้น KEEP
     public void keepCard4(View v){
         if(!isDeal){
             if (!keep4){
@@ -559,6 +612,7 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+    // เมื่อแตะที่ไพ่ ให้ไพ่ใบที่ 5 ขึ้น KEEP
     public void keepCard5(View v){
         if(!isDeal){
             if (!keep5){
@@ -572,6 +626,7 @@ public class Game extends AppCompatActivity {
         }
     }
 
+    // ตรวจสอบไพ่แต่ละใบว่า ได้กด KEEP ไว้หรือไม่
     public void keepCard(){
         if(!keep1){pickCard1();}
         if(!keep2){pickCard2();}
@@ -579,6 +634,7 @@ public class Game extends AppCompatActivity {
         if(!keep4){pickCard4();}
         if(!keep5){pickCard5();}
     }
+    // แสดงไพ่ที่ได้ตอนสิ้นสุดเกม
     public void showCard(){
         if(keep1){
             ((ImageView) findViewById(R.id.card1)).setImageResource(getResources().getIdentifier(nameOfCard1,"drawable",getPackageName()));
@@ -601,6 +657,7 @@ public class Game extends AppCompatActivity {
             keep5 = false;
         }
     }
+    // วิเคราะห์ไพ่ที่ได้อยู่ Hand Ranks ระดับใด
     public String computeGame(){
         int num[] = {num1, num2, num3, num4, num5};
         Arrays.sort(num);
@@ -655,6 +712,7 @@ public class Game extends AppCompatActivity {
 
     }
 
+    // คำนวณ Chip กับ Bet หลังเล่นจบ 1 รอบ
     public void computeChips(){
         if(chipsData.point < 0){
             chipsData.point = -1;
@@ -672,6 +730,7 @@ public class Game extends AppCompatActivity {
         String betText = "Bet : "+form.format(chipsData.bet);
         betTextView.setText(betText);
     }
+    // เมื่อกดปุ่ม +1,000 จะหัก Chip ลง 1000 และไปเพิ่มค่า Bet 1000
     public void bet1000(View v){
         if(chipsData.point < 1000){
             return;
@@ -682,6 +741,7 @@ public class Game extends AppCompatActivity {
         }
         computeChips();
     }
+    // เมื่อกดปุ่ม +2,000 จะหัก Chip ลง 2000 และไปเพิ่มค่า Bet 2000
     public void bet2000(View v){
         if(chipsData.point < 2000){
             return;
@@ -692,6 +752,7 @@ public class Game extends AppCompatActivity {
         }
         computeChips();
     }
+    // เมื่อกดปุ่ม +3,000 จะหัก Chip ลง 3000 และไปเพิ่มค่า Bet 3000
     public void bet3000(View v){
         if(chipsData.point < 3000){
             return;
@@ -702,6 +763,7 @@ public class Game extends AppCompatActivity {
         }
         computeChips();
     }
+    // เมื่อกดปุ่ม +5,000 จะหัก Chip ลง 5000 และไปเพิ่มค่า Bet 5000
     public void bet5000(View v){
         if(chipsData.point < 5000){
             return;
@@ -712,6 +774,7 @@ public class Game extends AppCompatActivity {
         }
         computeChips();
     }
+    // เมื่อกดปุ่ม +10,000 จะหัก Chip ลง 10000 และไปเพิ่มค่า Bet 10000
     public void bet10000(View v){
         if(chipsData.point < 10000){
             return;
@@ -722,6 +785,7 @@ public class Game extends AppCompatActivity {
         }
         computeChips();
     }
+    // คำนวณ Chip ที่ได้หลังจบเกม 1 รอบ
     public void calPoint(){
         int point = chipsData.point;
         int bet = chipsData.bet;
@@ -763,6 +827,7 @@ public class Game extends AppCompatActivity {
         chipsData.bet = 1000;
         computeChips();
     }
+    // เช็คว่าจำนวนของ Chip หมดรึยัง
     public void checkPoint(){
         if(chipsData.point < 0){
             ((Button)findViewById(R.id.btnPlay)).setVisibility(Button.INVISIBLE);

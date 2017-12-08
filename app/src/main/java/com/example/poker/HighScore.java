@@ -28,6 +28,7 @@ public class HighScore extends AppCompatActivity {
 
     private final ChipsData chipsData = ChipsData.getInstance();   // global
 
+    // set Adapter ให้กับ ListView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,7 @@ public class HighScore extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    // Query Score ใน table แบบเรียง score จากมากไปน้อย และ query มาแค่ 10 อันดับแรก
     private void loadDb() {
         Cursor cursor = db.query(
                 ScoreDb.table_name,
@@ -82,6 +84,7 @@ public class HighScore extends AppCompatActivity {
         }
     }
 
+    // เมื่อกด back จะกลับไปยังหน้า MainActivity.class
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, MainActivity.class);

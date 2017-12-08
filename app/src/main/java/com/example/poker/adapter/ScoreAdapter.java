@@ -19,6 +19,7 @@ import java.util.List;
  * Created by GUNNER on 28/11/2560.
  */
 
+// class Adapter เพื่อไปใช้แสดงผลลัพธ์บน ListView
 public class ScoreAdapter extends ArrayAdapter<ScoreItem>{
     private Context context;
     private int layoutResId;
